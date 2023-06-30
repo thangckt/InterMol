@@ -562,26 +562,23 @@ def summarize_energy_results(energy_input, energy_outputs, input_type, output_ty
 
 
 def _load_gromacs(gromacs_files):
-    """ gromacs_files = args['gro_in']: should contains 2 files
-            - `*.top`: 1st place
-            - `*.gro`: 2nd place
-
+    """ gromacs_files = args['gro_in']: should contains 2 files `*.top/.itp` and `*.gro`
     """
     if len(gromacs_files)!=2:
-        raise ValueError("'--gro_in' should follow by 2 files `*.top` in 1st place and `*.gro` in 2nd place")
+        raise ValueError("'--gro_in' should follow by 2 files `*.top/.itp` and `*.gro`")
 
     prefix = os.path.splitext(os.path.basename(gromacs_files[0]))[0]
     # Find the top file since order of inputs is not enforced.
-    # top_in = [x for x in gromacs_files if x.endswith('.top')]
-    # assert(len(top_in) == 1)
-    # top_in = os.path.abspath(top_in[0])
-    top_in = os.path.abspath(gromacs_files[0])
+    top_in = [x for x in gromacs_files if x.endswith('.top') or x.endswith('.itp')]
+    if len(top_in) != 1:
+        raise ValueError("file `*.top/.itp` is not found in '--gro_in'")
+    top_in = os.path.abspath(top_in[0])
 
     # Find the gro file since order of inputs is not enforced.
-    # gro_in = [x for x in gromacs_files if x.endswith('.gro')]
-    # assert(len(gro_in) == 1)
-    # gro_in = os.path.abspath(gro_in[0])
-    gro_in = os.path.abspath(gromacs_files[1])
+    gro_in = [x for x in gromacs_files if x.endswith('.gro')]
+    if len(gro_in) != 1:
+        raise ValueError("file `*.gro` is not found in '--gro_in'")
+    gro_in = os.path.abspath(gro_in[0])
     system = gmx.load(top_in, gro_in)
     return system, prefix, gro_in, top_in
 
