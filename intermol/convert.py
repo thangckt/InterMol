@@ -195,9 +195,10 @@ def main(args=None):
                 'reference:\n'
                 'Shirts, M.R., Klein, C., Swails, J.M. et al. J Comput Aided Mol Des (2016). doi:10.1007/s10822-016-9977-1\n')
 
-    # if not args:
-    #     args = vars(parse_args(args))
-    args = vars(args)
+    if not args:
+        args = vars(parse_args(args))
+    else:
+        args = vars(args)
 
     if args.get('gromacs_path'):
         gmx.GMX_PATH = args['gromacs_path']
