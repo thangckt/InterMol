@@ -197,7 +197,7 @@ def main(args=None):
 
     # if not args:
     #     args = vars(parse_args(args))
-    args = vars(parse_args(args))
+    args = vars(args)
 
     if args.get('gromacs_path'):
         gmx.GMX_PATH = args['gromacs_path']
