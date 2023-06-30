@@ -24,7 +24,7 @@ logger.setLevel(logging.DEBUG)
 logging.captureWarnings(True)
 warning_logger = logging.getLogger('py.warnings')
 
-# we convert them into these names 
+# we convert them into these names
 canonical_energy_names = [
     'bond',
 
@@ -130,7 +130,7 @@ def parse_args(args):
     group_misc.add_argument('--inefile', dest='inefile', default='',
             help='optional run settings file for input energy evaluation (e.g. .cfg, .mdp, .input)')
 
-    # desmond settings 
+    # desmond settings
     group_misc.add_argument('-dp', '--despath', dest='desmond_path',
             metavar='path', default='',
             help='path for DESMOND binary, needed for energy evaluation')
@@ -195,8 +195,9 @@ def main(args=None):
                 'reference:\n'
                 'Shirts, M.R., Klein, C., Swails, J.M. et al. J Comput Aided Mol Des (2016). doi:10.1007/s10822-016-9977-1\n')
 
-    if not args:
-        args = vars(parse_args(args))
+    # if not args:
+    #     args = vars(parse_args(args))
+    args = vars(parse_args(args))
 
     if args.get('gromacs_path'):
         gmx.GMX_PATH = args['gromacs_path']
@@ -501,8 +502,8 @@ def summarize_energy_results(energy_input, energy_outputs, input_type, output_ty
     out.append('=======================================================================')
     header = '%20s %18s' % ('type', 'input(%s)' % input_type)
     for otype in output_types:
-        header += '%18s' % ('output (%s)' % (otype)) 
-        header += '%18s' % ('diff (%s)' % (otype))  
+        header += '%18s' % ('output (%s)' % (otype))
+        header += '%18s' % ('diff (%s)' % (otype))
     out.append(header)
     types = ['notcomparable','comparable']
     for t in types:
@@ -548,7 +549,7 @@ def summarize_energy_results(energy_input, energy_outputs, input_type, output_ty
     i = labels.index('potential')
     diff = data[i, 1::] - data[i, 0]
     out.append('---------------- Total Potential Energy Comparison --------------------')
-    out.append('Input %s potential energy: %22.8f' % (input_type,data[i,0])) 
+    out.append('Input %s potential energy: %22.8f' % (input_type,data[i,0]))
     # print the canonical energies
     for d, otype in zip(diff, output_types):
         out.append('Difference in potential energy from %s=>%s conversion: %18.8f'
@@ -641,7 +642,7 @@ def _load_amber(amber_files):
     amb_structure = pmd.load_file(prmtop_in, xyz=crd_in)
     if amb_structure.box is None:
         amb_structure = pmd.load_file(prmtop_in, xyz=crd_in, box = [70,70,70,90,90,90])
-        
+
     # write out the files.  Should write them out in the proper directory (the one reading in)
     pathprefix = os.path.dirname(prmtop_in)
     fromamber_top_in = os.path.join(pathprefix, prefix + '_from_amber.top')
