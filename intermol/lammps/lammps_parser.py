@@ -14,7 +14,7 @@ from intermol.atom import Atom
 from intermol.molecule import Molecule
 from intermol.moleculetype import MoleculeType
 from intermol.system import System
-from intermol.force import LjDefaultPair
+from intermol.forces import LjDefaultPair
 
 logger = logging.getLogger('InterMolLog')
 
