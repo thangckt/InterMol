@@ -1064,6 +1064,10 @@ class LammpsParser(object):
                     x_coord = atom.position[0].value_in_unit(self.DIST)
                     y_coord = atom.position[1].value_in_unit(self.DIST)
                     z_coord = atom.position[2].value_in_unit(self.DIST)
+
+                    print(x_coord)
+                    print(x_min)
+
                     if x_coord < x_min:
                         x_min = x_coord
                     if y_coord < y_min:
