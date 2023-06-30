@@ -1043,7 +1043,7 @@ class LammpsParser(object):
                 offset += atoms_per_molecule
 
             # Atom specific information.
-            x_min = y_min = z_min = 0
+            x_min = y_min = z_min = 0.0
             logger.debug("    Writing atoms...")
             atom_charges = False
             for molecule in mol_type.molecules:
