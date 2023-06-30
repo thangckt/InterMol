@@ -1065,10 +1065,6 @@ class LammpsParser(object):
                     x_coord = atom.position[0].value_in_unit(self.DIST)
                     y_coord = atom.position[1].value_in_unit(self.DIST)
                     z_coord = atom.position[2].value_in_unit(self.DIST)
-
-                    print(x_coord)
-                    print(x_min)
-
                     if x_coord < x_min:
                         x_min = x_coord
                     if y_coord < y_min:
@@ -1249,36 +1245,37 @@ class LammpsParser(object):
                 logger.warning("Unsupported pair combination rule on writing input file!")
             f.write('\n')
 
-            if len(mol_type.rigidwaters) > 0:
-                f.write('fix settle all shake 0.000001 100 0 t')
+            for mol_name, mol_type in self.system.molecule_types.items():
+                if len(mol_type.rigidwaters) > 0:
+                    f.write('fix settle all shake 0.000001 100 0 t')
 
-                for rigidwater in mol_type.rigidwaters:
-                    molecules = list(mol_type.molecules)
-                    a1 = atom_type_dict[molecules[0].atoms[rigidwater.atom1-1].atomtype[0]]
-                    a2 = atom_type_dict[molecules[0].atoms[rigidwater.atom1].atomtype[0]]
-                    # get the atom types of the first two molecules
+                    for rigidwater in mol_type.rigidwaters:
+                        molecules = list(mol_type.molecules)
+                        a1 = atom_type_dict[molecules[0].atoms[rigidwater.atom1-1].atomtype[0]]
+                        a2 = atom_type_dict[molecules[0].atoms[rigidwater.atom1].atomtype[0]]
+                        # get the atom types of the first two molecules
 
-                    # settles should be numbered from 0, not 1?
+                        # settles should be numbered from 0, not 1?
 
-                    # first, write out all the atom types involved: should be the first two in the molecule.
-                    f.write(' {0:d} {1:d} a'.format(a1,a2))
-                    angle_i = 0
-                    # add up the angles until the settle.  I think this is problematic because
-                    # it doesn't take into account any transformation to the number of
-                    # angles when lammps writes out.
-                    for mol_name_j, mol_type_j in self.system.molecule_types.items():
-                        if mol_name_j != mol_name:
-                            angle_i += len(mol_type_j.angle_forces)*len(mol_type_j.molecules)
-                        elif mol_name_j == mol_name:
-                            break
+                        # first, write out all the atom types involved: should be the first two in the molecule.
+                        f.write(' {0:d} {1:d} a'.format(a1,a2))
+                        angle_i = 0
+                        # add up the angles until the settle.  I think this is problematic because
+                        # it doesn't take into account any transformation to the number of
+                        # angles when lammps writes out.
+                        for mol_name_j, mol_type_j in self.system.molecule_types.items():
+                            if mol_name_j != mol_name:
+                                angle_i += len(mol_type_j.angle_forces)*len(mol_type_j.molecules)
+                            elif mol_name_j == mol_name:
+                                break
 
-                # only one angle per settle
-                angle_range = np.arange(angle_i+1,angle_i+len(mol_type.molecules)+1)
-                for a in angle_range:
-                    f.write(' {0:d}'.format(a))
-                    if (a-angle_i)%10 == 0:
-                        f.write(' &\n')
-                f.write('\n')
+                    # only one angle per settle
+                    angle_range = np.arange(angle_i+1,angle_i+len(mol_type.molecules)+1)
+                    for a in angle_range:
+                        f.write(' {0:d}'.format(a))
+                        if (a-angle_i)%10 == 0:
+                            f.write(' &\n')
+                    f.write('\n')
 
             # Specify the output energies that we are interested in.
             energy_terms = " ".join(['ebond', 'eangle', 'edihed', 'eimp',
