@@ -1028,6 +1028,9 @@ class LammpsParser(object):
             logger.debug(
                 "    Writing moleculetype {0}...".format(mol_name))
 
+            print(mol_name)
+
+
             # OrderedSet isn't indexable so get the first molecule by iterating.
             molecule = next(iter(mol_type.molecules))
             atoms_per_molecule = len(molecule.atoms)
