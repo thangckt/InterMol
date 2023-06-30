@@ -22,7 +22,7 @@ class System(object):
             self.name = "Untitled"
 
         self.nonbonded_function = 0
-        self.combination_rule = 0
+        self.combination_rule = 'Lorentz-Berthelot'  # 0
         self.genpairs = 'yes'
         self.lj_correction = 0
         self.coulomb_correction = 0
