@@ -1024,12 +1024,10 @@ class LammpsParser(object):
 
         # Read all atom specific and FF information.
         offset = 0
+        x_min = y_min = z_min = 0.0
         for mol_name, mol_type in self.system.molecule_types.items():
             logger.debug(
                 "    Writing moleculetype {0}...".format(mol_name))
-
-            print(mol_name)
-
 
             # OrderedSet isn't indexable so get the first molecule by iterating.
             molecule = next(iter(mol_type.molecules))
@@ -1046,12 +1044,6 @@ class LammpsParser(object):
                 offset += atoms_per_molecule
 
             # Atom specific information.
-            x_min = y_min = z_min = 0.0
-
-            print(x_min)
-
-
-
             logger.debug("    Writing atoms...")
             atom_charges = False
             for molecule in mol_type.molecules:
