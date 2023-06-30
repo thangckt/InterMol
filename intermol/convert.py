@@ -571,15 +571,15 @@ def _load_gromacs(gromacs_files):
     prefix = os.path.splitext(os.path.basename(gromacs_files[0]))[0]
     # Find the top file since order of inputs is not enforced.
     # top_in = [x for x in gromacs_files if x.endswith('.top')]
-    top_in = gromacs_files[1]
-    assert(len(top_in) == 1)
-    top_in = os.path.abspath(top_in[0])
+    # assert(len(top_in) == 1)
+    # top_in = os.path.abspath(top_in[0])
+    top_in = os.path.abspath(gromacs_files[1])
 
     # Find the gro file since order of inputs is not enforced.
     # gro_in = [x for x in gromacs_files if x.endswith('.gro')]
-    gro_in = gromacs_files[0]
-    assert(len(gro_in) == 1)
-    gro_in = os.path.abspath(gro_in[0])
+    # assert(len(gro_in) == 1)
+    # gro_in = os.path.abspath(gro_in[0])
+    gro_in = os.path.abspath(gromacs_files[0])
     system = gmx.load(top_in, gro_in)
     return system, prefix, gro_in, top_in
 
